@@ -14,3 +14,174 @@ const photos=[{id:'photo-1472396961693-142e6e269027',alt:'Setkání s přírodou
 document.querySelectorAll('dialog').forEach(d=>{d.querySelector('.close').onclick=()=>d.close();d.addEventListener('click',e=>{if(e.target===d){const r=d.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)d.close()}})});
 document.querySelector('#contact-open').onclick=()=>document.querySelector('#contact-dialog').showModal();document.querySelector('#contact-form').onsubmit=e=>{e.preventDefault();const f=new FormData(e.target);document.querySelector('#draft').textContent=`Text si můžeš označit a zkopírovat. Zatím nebyl odeslán.\n\nDobrý den, jmenuji se ${f.get('name')}.\nZajímá mě: ${f.get('trip')}.\n\n${f.get('message')}`};
 const menu=document.querySelector('.menu');menu.onclick=()=>{const open=document.querySelector('nav').classList.toggle('open');menu.setAttribute('aria-expanded',String(open));menu.setAttribute('aria-label',open?'Zavřít menu':'Otevřít menu')};document.querySelectorAll('nav a').forEach(a=>a.onclick=()=>{document.querySelector('nav').classList.remove('open');menu.setAttribute('aria-expanded','false')});
+// FLOW členství – předplatné a jeho výhody
+(() => {
+  if (document.querySelector('#clenstvi')) return;
+
+  const benefits = [
+    {
+      title: 'Středy s jógou',
+      text: 'Každou středu živá online lekce jógy a přístup ke knihovně záznamů. Zacvič si s námi naživo, nebo kdykoliv podle svého času.'
+    },
+    {
+      title: 'Věrnostní program',
+      text: 'Automatická sleva 5 % na pobyty, která se podle počtu absolvovaných pobytů postupně zvyšuje až na 12 %.'
+    },
+    {
+      title: 'Přednostní rezervace',
+      text: 'Přístup k novým pobytům o 7 dní dříve než ostatní zákaznice. Vyber si svůj termín mezi prvními.'
+    },
+    {
+      title: 'FLOW komunita',
+      text: 'Uzavřená skupina pro členky, kde můžeš sdílet zkušenosti, seznamovat se, domlouvat společné cestování a zapojovat se do různých výzev.'
+    },
+    {
+      title: 'Mystery Retreat',
+      text: 'Jednou ročně speciální pobyt pouze pro předplatitelky, jehož destinace je překvapením. Předem znáš termín, cenu a náročnost. Místo a část programu se dozvíš až před odjezdem. Pobyt se hradí samostatně.'
+    }
+  ];
+
+  const section = document.createElement('section');
+  section.id = 'clenstvi';
+  section.className = 'wrap flow-membership';
+  section.setAttribute('aria-labelledby', 'flow-title');
+
+  section.innerHTML = `
+    <div class="section-top">
+      <div>
+        <p class="eyebrow">TVŮJ FLOW I MEZI POBYTY</p>
+        <h2 id="flow-title">
+          Chvíle pro sebe.<br>
+          <em>Každý měsíc.</em>
+        </h2>
+      </div>
+      <p class="flow-price">
+        <strong>299 Kč</strong> / měsíc<br>
+        <span>FLOW členství</span>
+      </p>
+    </div>
+
+    <p class="flow-intro">
+      Pobytem to nekončí. Dopřej si pravidelný pohyb,
+      propojení s ostatními a něco, na co se můžeš těšit.
+      S předplatným FLOW zůstáváme v kontaktu po celý rok.
+    </p>
+
+    <div class="flow-benefits">
+      ${benefits.map((benefit, index) => `
+        <article class="flow-benefit">
+          <span class="eyebrow">0${index + 1}</span>
+          <h3>${benefit.title}</h3>
+          <p>${benefit.text}</p>
+        </article>
+      `).join('')}
+    </div>
+
+    <p class="flow-note">
+      Členství připravujeme. Podmínky předplatného a úrovně
+      věrnostního programu zveřejníme před spuštěním.
+    </p>
+  `;
+
+  const stays = document.querySelector('#pobyty');
+
+  if (stays) {
+    stays.after(section);
+  } else {
+    document.querySelector('main')?.append(section);
+  }
+
+  const style = document.createElement('style');
+  style.textContent = `
+    .flow-membership {
+      padding-top: 72px;
+      padding-bottom: 72px;
+      scroll-margin-top: 100px;
+    }
+
+    .flow-membership .flow-price {
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+
+    .flow-price strong {
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 500;
+    }
+
+    .flow-price span {
+      font-size: 0.95rem;
+    }
+
+    .flow-intro {
+      max-width: 720px;
+      margin-bottom: 32px;
+      line-height: 1.8;
+    }
+
+    .flow-benefits {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .flow-benefit {
+      padding: clamp(20px, 3vw, 36px);
+      border: 1px solid #d7d8ce;
+      border-radius: 16px;
+      background: #f5f4ed;
+      color: #303c31;
+    }
+
+    .flow-benefit h3 {
+      margin: 12px 0;
+      font-size: 1.5rem;
+    }
+
+    .flow-benefit p {
+      margin-bottom: 0;
+      line-height: 1.75;
+    }
+
+    .flow-benefit:last-child {
+      grid-column: 1 / -1;
+    }
+
+    .flow-note {
+      margin-top: 24px;
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 640px) {
+      .flow-benefits {
+        grid-template-columns: 1fr;
+      }
+
+      .flow-membership .section-top {
+        display: block;
+      }
+    }
+  `;
+
+  document.head.append(style);
+
+  // Odkaz na členství v hlavní navigaci
+  const nav = document.querySelector('header nav');
+
+  if (nav && !nav.querySelector('a[href="#clenstvi"]')) {
+    const link = document.createElement('a');
+    link.href = '#clenstvi';
+    link.textContent = 'FLOW členství';
+
+    link.addEventListener('click', () => {
+      nav.classList.remove('open');
+      const menuButton = document.querySelector('.menu');
+      menuButton?.setAttribute('aria-expanded', 'false');
+      menuButton?.setAttribute('aria-label', 'Otevřít menu');
+    });
+
+    const galleryLink = nav.querySelector('a[href="#galerie"]');
+    nav.insertBefore(link, galleryLink);
+  }
+})();
