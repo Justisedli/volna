@@ -70,7 +70,7 @@ const menu=document.querySelector('.menu');menu.onclick=()=>{const open=document
     <div class="flow-benefits">
       ${benefits.map((benefit, index) => `
         <article class="flow-benefit">
-          <span class="eyebrow">0${index + 1}</span>
+ 
           <h3>${benefit.title}</h3>
           <p>${benefit.text}</p>
         </article>
