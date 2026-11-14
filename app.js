@@ -77,10 +77,7 @@ const menu=document.querySelector('.menu');menu.onclick=()=>{const open=document
       `).join('')}
     </div>
 
-    <p class="flow-note">
-      Členství připravujeme. Podmínky předplatného a úrovně
-      věrnostního programu zveřejníme před spuštěním.
-    </p>
+   
   `;
 
   const stays = document.querySelector('#pobyty');
